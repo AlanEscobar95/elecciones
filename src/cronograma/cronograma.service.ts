@@ -45,7 +45,7 @@ export class CronogramaService {
   async update(id: number, dto: CronogramaDto): Promise<any> {
     const cronograma = await this.findById(id);
     if(!cronograma)
-    throw new BadRequestException({ message: 'Esa tarea no existe'});
+    throw new BadRequestException(new MessageDto ('Esa tarea no existe'));
     const exists = await this.findByNombre(dto.nomTarea);
     if (exists && exists.id !==id) throw new BadRequestException(new MessageDto ('Esa tarea ya existe'));
     cronograma.nomTarea = dto.nomTarea ?? cronograma.nomTarea;
