@@ -9,7 +9,7 @@ export class RolEntity{
     id: number;
 
     @Column({type:'varchar', nullable: false, unique: true})
-    rol_nombre: RolNombre; 
+    rolNombre: RolNombre;
     
     @ManyToMany(type => UsuarioEntity, usuario => usuario.roles)
     usuarios:UsuarioEntity[];
