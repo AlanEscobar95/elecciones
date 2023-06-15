@@ -5,6 +5,8 @@ import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CronogramaModule } from './cronograma/cronograma.module';
+import { UsuarioModule } from './usuario/usuario.module';
+import { RolModule } from './rol/rol.module';
 
 
 @Module({
@@ -28,6 +30,8 @@ import { CronogramaModule } from './cronograma/cronograma.module';
       inject: [ConfigService],
     }),
     CronogramaModule,
+    UsuarioModule,
+    RolModule,
   ],
   controllers: [AppController],
   providers: [AppService],
