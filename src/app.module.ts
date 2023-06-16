@@ -7,6 +7,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { CronogramaModule } from './cronograma/cronograma.module';
 import { UsuarioModule } from './usuario/usuario.module';
 import { RolModule } from './rol/rol.module';
+import { AuthModule } from './auth/auth.module';
 
 
 @Module({
@@ -32,6 +33,7 @@ import { RolModule } from './rol/rol.module';
     CronogramaModule,
     UsuarioModule,
     RolModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
