@@ -2,37 +2,47 @@ import {CronogramaService} from './cronograma.service';
 import {Body,Controller,Get,Param,ParseIntPipe,Post,Put,Delete, UsePipes, ValidationPipe, UseGuards, UnauthorizedException} from '@nestjs/common';
 import {CronogramaDto} from './dto/cronograma-dto';
 import { JwtAuthGuard } from 'src/guards/jwt.guard';
-import { GetPrincipal } from './decorators/get-principal.decorator';
-import { MessageDto } from 'src/common/message.dto';
+import { RolesGuard } from 'src/guards/rol.guard';
+import { RolDecorator } from './decorators/rol.decorador';
+import { RolNombre } from 'src/rol/rol.enum';
+
 
 @Controller('cronograma')
 export class CronogramaController {
     constructor(private readonly cronogramaService: CronogramaService){}
-
-        @UseGuards(JwtAuthGuard)
+        
+        @RolDecorator(RolNombre.ADMINISTRADOR)
+        @UseGuards(JwtAuthGuard, RolesGuard)
         @Get()
-        async getall(@GetPrincipal() user: any){
-          if(user.roles.indexOf('administrador') < 0) throw new UnauthorizedException(new MessageDto('no tiene permisos para realizar esta acción'));
+        async getall(){
           return await this.cronogramaService.getall();
         }
         
+        @RolDecorator(RolNombre.ADMINISTRADOR)
+        @UseGuards(JwtAuthGuard, RolesGuard)
         @Get(':id')
         async getOne(@Param('id', ParseIntPipe) id: number){
           return await this.cronogramaService.findById(id);
         }
-
+        
+        @RolDecorator(RolNombre.ADMINISTRADOR)
+        @UseGuards(JwtAuthGuard, RolesGuard)
         @UsePipes(new ValidationPipe({whitelist: true}))
         @Post()
         async create(@Body() dto: CronogramaDto){
           return await this.cronogramaService.create(dto);
         }
         
+        @RolDecorator(RolNombre.ADMINISTRADOR)
+        @UseGuards(JwtAuthGuard, RolesGuard)
         @UsePipes(new ValidationPipe({whitelist: true}))
         @Put(':id')
         async update(@Param('id',ParseIntPipe) id: number, @Body() dto:CronogramaDto){
           return await this.cronogramaService.update(id,dto);
         }
 
+        @RolDecorator(RolNombre.ADMINISTRADOR)
+        @UseGuards(JwtAuthGuard, RolesGuard)
         @Delete(':id')
         async delete(@Param('id', ParseIntPipe) id:number){
             return await this.cronogramaService.delete(id)
