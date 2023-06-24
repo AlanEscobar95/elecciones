@@ -1,8 +1,8 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
-@Entity({name:'cronograma'})
+@Entity({name:'cronogramas'})
 
-export class CronogramaEntity{
+export class CronogramasEntity{
     @PrimaryGeneratedColumn()
     id: number;
     @Column({type: 'varchar', length:50})

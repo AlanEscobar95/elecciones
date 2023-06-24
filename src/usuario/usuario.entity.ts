@@ -1,9 +1,9 @@
 import { hash } from "bcryptjs";
-import { RolEntity } from "src/rol/rol.entity";
+import { RolesEntity } from "src/rol/rol.entity";
 import { BeforeInsert, BeforeUpdate, Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({name:'usuarios'})
-export class UsuarioEntity{
+export class UsuariosEntity{
 
     @PrimaryGeneratedColumn('increment')
     id: number;
@@ -12,7 +12,7 @@ export class UsuarioEntity{
     nombre: string; 
     
     @Column({type:'varchar', nullable: false})
-    nombreUsuario: string;
+    nombreRol: string;
 
     @Column({type:'varchar', nullable: false})
     apellido: string;
@@ -35,13 +35,13 @@ export class UsuarioEntity{
     @Column({type:'boolean', nullable: false})
     estado_voto: boolean;
     
-    @ManyToMany(type => RolEntity, rol => rol.usuarios,{eager:true})
+    @ManyToMany(type => RolesEntity, rol => rol.usuarios,{eager:true})
     @JoinTable({
         name:'usuarios_roles',
         joinColumn:{name:'usuario_id'},
         inverseJoinColumn:{name:'rol_id'}
     })
-    roles:RolEntity[];
+    roles:RolesEntity[];
 
     @BeforeInsert()
     @BeforeUpdate()

@@ -9,7 +9,7 @@ export class NuevoUsuarioDto{
    nombre: string;
 
    @MaxLength(50,{message:'El nombre no puede tener mas de 50 caracteres'})
-   nombreUsuario: string;
+   nombreRol: string;
 
    @IsString()
    @IsNotBlank({message:'El apellido no puede estar vacio'})

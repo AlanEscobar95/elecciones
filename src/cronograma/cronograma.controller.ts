@@ -1,12 +1,18 @@
 import {CronogramaService} from './cronograma.service';
-import {Body,Controller,Get,Param,ParseIntPipe,Post,Put,Delete, UsePipes, ValidationPipe} from '@nestjs/common';
+import {Body,Controller,Get,Param,ParseIntPipe,Post,Put,Delete, UsePipes, ValidationPipe, UseGuards, UnauthorizedException} from '@nestjs/common';
 import {CronogramaDto} from './dto/cronograma-dto';
+import { JwtAuthGuard } from 'src/guards/jwt.guard';
+import { GetPrincipal } from './decorators/get-principal.decorator';
+import { MessageDto } from 'src/common/message.dto';
 
 @Controller('cronograma')
 export class CronogramaController {
     constructor(private readonly cronogramaService: CronogramaService){}
+
+        @UseGuards(JwtAuthGuard)
         @Get()
-        async getall(){
+        async getall(@GetPrincipal() user: any){
+          if(user.roles.indexOf('administrador') < 0) throw new UnauthorizedException(new MessageDto('no tiene permisos para realizar esta acción'));
           return await this.cronogramaService.getall();
         }
         

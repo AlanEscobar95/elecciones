@@ -3,17 +3,19 @@ import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthRepository } from './auth.repository';
-import { UsuarioEntity } from 'src/usuario/usuario.entity';
-import { RolEntity } from 'src/rol/rol.entity';
+import { UsuariosEntity } from 'src/usuario/usuario.entity';
+import { RolesEntity } from 'src/rol/rol.entity';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JWT_SECRET } from 'src/config/constants';
 import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from './strategies/jwt.strategy';
 
+
+
 @Module({
   imports:[
-    TypeOrmModule.forFeature([UsuarioEntity,RolEntity,AuthRepository]),
+    TypeOrmModule.forFeature([UsuariosEntity,RolesEntity,AuthRepository]),
     PassportModule.register({
 
       defaultStrategy: 'jwt'

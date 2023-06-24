@@ -1,9 +1,9 @@
 import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
 import { RolNombre } from "./rol.enum";
-import { UsuarioEntity } from "src/usuario/usuario.entity";
+import { UsuariosEntity } from "src/usuario/usuario.entity";
 
 @Entity({name:'roles'})
-export class RolEntity{
+export class RolesEntity{
 
     @PrimaryGeneratedColumn('increment')
     id: number;
@@ -11,6 +11,6 @@ export class RolEntity{
     @Column({type:'varchar', nullable: false, unique: true})
     rolNombre: RolNombre;
     
-    @ManyToMany(type => UsuarioEntity, usuario => usuario.roles)
-    usuarios:UsuarioEntity[];
+    @ManyToMany(type => UsuariosEntity, usuario => usuario.roles)
+    usuarios:UsuariosEntity[];
 }

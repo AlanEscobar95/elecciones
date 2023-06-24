@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CronogramaEntity } from './cronograma.entity';
+import { CronogramasEntity } from './cronograma.entity';
 import { CronogramaDto } from './dto/cronograma-dto';
 import { CronogramaRepository } from './cronograma.repository';
 import { FindOneOptions } from 'typeorm';
@@ -9,11 +9,11 @@ import { MessageDto } from 'src/common/message.dto';
 @Injectable()
 export class CronogramaService {
   constructor(
-    @InjectRepository(CronogramaEntity)
+    @InjectRepository(CronogramasEntity)
     private cronogramaRepository: CronogramaRepository
   ) {}
 
-  async getall(): Promise<CronogramaEntity[]> {
+  async getall(): Promise<CronogramasEntity[]> {
     const list = await this.cronogramaRepository.find();
     if (!list.length) {
       throw new NotFoundException(new MessageDto('La Lista esta vacia' ));
@@ -21,7 +21,7 @@ export class CronogramaService {
     return list;
   }
 
-  async findById(id: number): Promise<CronogramaEntity> {
+  async findById(id: number): Promise<CronogramasEntity> {
     const cronograma = await this.cronogramaRepository.findOne({where:{id:id}});
     if (!cronograma) {
       throw new NotFoundException(new MessageDto('No existe una tarea con ese id'));
@@ -29,7 +29,7 @@ export class CronogramaService {
     return cronograma;
   }
 
-  async findByNombre(nomTarea: string): Promise<CronogramaEntity> {
+  async findByNombre(nomTarea: string): Promise<CronogramasEntity> {
     const cronograma = await this.cronogramaRepository.findOne({ where: { nomTarea: nomTarea } });
     return cronograma;
   }
