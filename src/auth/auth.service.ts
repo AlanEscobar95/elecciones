@@ -19,7 +19,7 @@ export class AuthService {
         private readonly rolRepository: RolRepository,
         @InjectRepository(UsuariosEntity)
         private readonly authRepository: AuthRepository,
-        private readonly jWTService: JwtService
+        private readonly jWtService: JwtService
     ) { }
 
     async getAll(): Promise<UsuariosEntity[]> {
@@ -41,18 +41,19 @@ export class AuthService {
     }
 
     async login(dto: LoginUsuarioDto): Promise<any> {
-        const { correo_electronico } = dto;
-        const usuario = await this.authRepository.findOne({ where: [{ correo_electronico: correo_electronico }] });
-        if (!usuario) throw new UnauthorizedException(new MessageDto('Usuario no encontrado'));
+        const {correo_electronico} = dto;
+        const usuario = await this.authRepository.findOne({where:[{ correo_electronico: correo_electronico}]});
+        if (!usuario) return new UnauthorizedException(new MessageDto('Usuario no encontrado'));
         const passwordOK = await compare(dto.password, usuario.password);
-        if (!passwordOK) return new UnauthorizedException(new MessageDto('Contraseña Erronea'));
+        if (!passwordOK) return new UnauthorizedException(new MessageDto('Contraseña Errónea'));
         const payload: PayloadInterface = {
             id: usuario.id,
             nombreRol: usuario.nombreRol,
+            nombre: usuario.nombre,
             correo_electronico: usuario.correo_electronico,
             roles: usuario.roles.map(rol => rol.rolNombre as RolNombre)
         }
-        const token = await this.jWTService.sign(payload);
-        return { token };
+        const token = await this.jWtService.sign(payload);
+        return {token};
     }
 }

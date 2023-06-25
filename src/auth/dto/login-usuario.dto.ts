@@ -5,7 +5,7 @@ export class LoginUsuarioDto{
    
    @MaxLength(50,{message:'El rol no puede tener mas de 50 caracteres'})
    nombreRol: string;
-
+   
    @IsEmail()
    correo_electronico: string;
 
