@@ -9,7 +9,7 @@ import { RolNombre } from 'src/rol/rol.enum';
 import { LoginUsuarioDto } from './dto/login-usuario.dto';
 import { compare } from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
-import { PayloadInterface } from './strategies/payload.inteface';
+import { PayloadInterface } from './payload.inteface';
 import { RolesEntity } from 'src/rol/rol.entity';
 
 @Injectable()
@@ -19,7 +19,7 @@ export class AuthService {
         private readonly rolRepository: RolRepository,
         @InjectRepository(UsuariosEntity)
         private readonly authRepository: AuthRepository,
-        private readonly jWtService: JwtService
+        private readonly jwtService: JwtService
     ) { }
 
     async getAll(): Promise<UsuariosEntity[]> {
@@ -34,15 +34,15 @@ export class AuthService {
         if (exists) throw new BadRequestException(new MessageDto('ese usuario ya existe'));
         const rolCandidato = await this.rolRepository.findOne({ where: { rolNombre: RolNombre.CANDIDATO }});
         if (!rolCandidato) throw new InternalServerErrorException(new MessageDto('El usuario aún no ha sido creado'));
-        const user = this.authRepository.create(dto);
-        user.roles = [rolCandidato];
-        await this.authRepository.save(user);
+        const candidato = this.authRepository.create(dto);
+        candidato.roles = [rolCandidato];
+        await this.authRepository.save(candidato);
         return new MessageDto('Usuario creado correctamente');
     }
 
     async login(dto: LoginUsuarioDto): Promise<any> {
-        const {correo_electronico} = dto;
-        const usuario = await this.authRepository.findOne({where:[{ correo_electronico: correo_electronico}]});
+        const {nombreRol,correo_electronico} = dto;
+        const usuario = await this.authRepository.findOne({where:[{nombreRol:nombreRol},{ correo_electronico: correo_electronico}]});
         if (!usuario) return new UnauthorizedException(new MessageDto('Usuario no encontrado'));
         const passwordOK = await compare(dto.password, usuario.password);
         if (!passwordOK) return new UnauthorizedException(new MessageDto('Contraseña Errónea'));
@@ -53,7 +53,7 @@ export class AuthService {
             correo_electronico: usuario.correo_electronico,
             roles: usuario.roles.map(rol => rol.rolNombre as RolNombre)
         }
-        const token = await this.jWtService.sign(payload);
+        const token = await this.jwtService.sign(payload);
         return {token};
     }
 }

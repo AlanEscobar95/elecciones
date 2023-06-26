@@ -1,31 +1,29 @@
-import {CronogramaService} from './cronograma.service';
-import {Body,Controller,Get,Param,ParseIntPipe,Post,Put,Delete, UsePipes, ValidationPipe, UseGuards, UnauthorizedException} from '@nestjs/common';
+import {Body,Controller,Get,Param,ParseIntPipe,Post,Put,Delete, UsePipes, ValidationPipe, UseGuards} from '@nestjs/common';
 import {CronogramaDto} from './dto/cronograma-dto';
 import { JwtAuthGuard } from 'src/guards/jwt.guard';
 import { RolesGuard } from 'src/guards/rol.guard';
 import { RolDecorator } from './decorators/rol.decorador';
 import { RolNombre } from 'src/rol/rol.enum';
+import { CronogramaService } from './cronograma.service';
 
 
 @Controller('cronograma')
 export class CronogramaController {
     constructor(private readonly cronogramaService: CronogramaService){}
         
-        @RolDecorator(RolNombre.ADMINISTRADOR)
         @UseGuards(JwtAuthGuard, RolesGuard)
         @Get()
         async getall(){
           return await this.cronogramaService.getall();
         }
         
-        @RolDecorator(RolNombre.ADMINISTRADOR)
         @UseGuards(JwtAuthGuard, RolesGuard)
         @Get(':id')
         async getOne(@Param('id', ParseIntPipe) id: number){
           return await this.cronogramaService.findById(id);
         }
         
-        @RolDecorator(RolNombre.ADMINISTRADOR)
+
         @UseGuards(JwtAuthGuard, RolesGuard)
         @UsePipes(new ValidationPipe({whitelist: true}))
         @Post()
@@ -33,7 +31,6 @@ export class CronogramaController {
           return await this.cronogramaService.create(dto);
         }
         
-        @RolDecorator(RolNombre.ADMINISTRADOR)
         @UseGuards(JwtAuthGuard, RolesGuard)
         @UsePipes(new ValidationPipe({whitelist: true}))
         @Put(':id')
@@ -41,7 +38,6 @@ export class CronogramaController {
           return await this.cronogramaService.update(id,dto);
         }
 
-        @RolDecorator(RolNombre.ADMINISTRADOR)
         @UseGuards(JwtAuthGuard, RolesGuard)
         @Delete(':id')
         async delete(@Param('id', ParseIntPipe) id:number){
