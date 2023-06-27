@@ -29,10 +29,10 @@ export class UsuariosEntity{
     @Column({type:'varchar', nullable: false})
     password: string;
 
-    @Column({type:'boolean', nullable: false})
+    @Column({type:'boolean', nullable: true})
     estado_usuario: boolean;
 
-    @Column({type:'boolean', nullable: false})
+    @Column({type:'boolean', nullable: true})
     estado_voto: boolean;
     
     @ManyToMany(type => RolesEntity, rol => rol.usuarios,{eager:true})

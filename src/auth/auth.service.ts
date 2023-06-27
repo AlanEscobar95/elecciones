@@ -41,8 +41,8 @@ export class AuthService {
     }
 
     async login(dto: LoginUsuarioDto): Promise<any> {
-        const {nombreRol,correo_electronico} = dto;
-        const usuario = await this.authRepository.findOne({where:[{nombreRol:nombreRol},{ correo_electronico: correo_electronico}]});
+        const {correo_electronico} = dto;
+        const usuario = await this.authRepository.findOne({where:[{ correo_electronico: correo_electronico}]});
         if (!usuario) return new UnauthorizedException(new MessageDto('Usuario no encontrado'));
         const passwordOK = await compare(dto.password, usuario.password);
         if (!passwordOK) return new UnauthorizedException(new MessageDto('Contraseña Errónea'));
