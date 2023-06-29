@@ -58,8 +58,5 @@ export class CandidatosEntity {
     comment: 'Carrera que se encuentra cursando el candidato de lista',
   })
   carreraId: string;
-
-  @ManyToOne(() => ListasEntity, lista => lista.candidatos)
-  @JoinColumn({ name: 'lista_id' })
-  lista: ListasEntity;
+  
 }

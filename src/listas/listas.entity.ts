@@ -1,46 +1,16 @@
 /*==================LISTAS-ENTITY==============*/
-import { CandidatosEntity } from 'src/candidato/candidatos.entity';
+import { UsuariosEntity } from 'src/usuario/usuario.entity';
 import {
     Column,
-    CreateDateColumn,
-    DeleteDateColumn,
     Entity,
-    JoinColumn,
-    ManyToOne,
     OneToMany,
     PrimaryGeneratedColumn,
-    UpdateDateColumn,
   } from 'typeorm';
 
   
   @Entity('listas')
   export class ListasEntity {
-    /* Metodos */
-    @CreateDateColumn({
-      name: 'created_at',
-      type: 'timestamptz',
-      default: () => 'CURRENT_TIMESTAMP',
-      comment: 'Fecha de creacion del candidato',
-      })
-      createdAt: Date;
-    
-    @UpdateDateColumn({
-      name: 'updated_at', // Nombre de la columna en la base de datos
-      type: 'timestamptz',
-      default: () => 'CURRENT_TIMESTAMP',
-      comment: 'Fecha de actualizacion de los candidatos',
-    })
-    updatedAt: Date;
-
-    @DeleteDateColumn({
-        name: 'deleted_at',
-        type: 'timestamptz',
-        default: () => 'CURRENT_TIMESTAMP',
-        comment: 'Fecha en la que se elimina el candidato',
-      })
-      deleteAt: Date;
-    /* Fin Metodos */
-
+   
     /* Declaracion de campos de la tabla */
     @PrimaryGeneratedColumn() 
     id: number;
@@ -82,7 +52,7 @@ import {
     @Column({
         name: 'numero_lista',
         type: 'integer',
-        comment: 'Color de la Lista Ej:Verde',
+        comment: 'Numero de la Lista Ej: 1',
       })
       numeroLista: number;
       
@@ -94,7 +64,9 @@ import {
       })
       imagenLogo: string;
 
-      @OneToMany(() => CandidatosEntity, candidato => candidato.lista)
-      candidatos: CandidatosEntity[];
+      @OneToMany(() => UsuariosEntity, usuarios => usuarios.lista)
+      usuarios: UsuariosEntity[];
+      
+    nomTarea: any;
   }
   

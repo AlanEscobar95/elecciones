@@ -8,6 +8,7 @@ import { CronogramaModule } from './cronograma/cronograma.module';
 import { UsuarioModule } from './usuario/usuario.module';
 import { RolModule } from './rol/rol.module';
 import { AuthModule } from './auth/auth.module';
+import { ListasModule } from './listas/listas.module';
 
 
 @Module({
@@ -34,6 +35,7 @@ import { AuthModule } from './auth/auth.module';
     UsuarioModule,
     RolModule,
     AuthModule,
+    ListasModule
   ],
   controllers: [AppController],
   providers: [AppService],

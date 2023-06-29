@@ -1,6 +1,7 @@
 import { hash } from "bcryptjs";
+import { ListasEntity } from "src/listas/listas.entity";
 import { RolesEntity } from "src/rol/rol.entity";
-import { BeforeInsert, BeforeUpdate, Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
+import { BeforeInsert, BeforeUpdate, Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({name:'usuarios'})
 export class UsuariosEntity{
@@ -42,6 +43,10 @@ export class UsuariosEntity{
         inverseJoinColumn:{name:'rol_id'}
     })
     roles:RolesEntity[];
+
+    @ManyToOne(() => ListasEntity, lista => lista.usuarios)
+    @JoinColumn({ name: 'lista_id' })
+    lista: ListasEntity;
 
     @BeforeInsert()
     @BeforeUpdate()
