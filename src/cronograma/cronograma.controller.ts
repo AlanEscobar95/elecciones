@@ -3,6 +3,8 @@ import {CronogramaDto} from './dto/cronograma-dto';
 import { JwtAuthGuard } from 'src/guards/jwt.guard';
 import { RolesGuard } from 'src/guards/rol.guard';
 import { CronogramaService } from './cronograma.service';
+import { RolDecorator } from 'decorators/rol.decorador';
+import { RolNombre } from 'src/rol/rol.enum';
 
 
 @Controller('cronograma')

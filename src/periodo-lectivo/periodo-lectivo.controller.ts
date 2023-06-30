@@ -20,7 +20,7 @@ export class PeriodoLectivoController {
     }
 
     @Post()
-    async create (@Body() dto: PeriodoLectivoDto){
+    async create(@Body() dto: PeriodoLectivoDto){
         return await this.periodoLectivoService.create(dto);
     }
 
@@ -29,7 +29,7 @@ export class PeriodoLectivoController {
         return await this.periodoLectivoService.update(id,dto);
     } 
 
-    @Delete('id')
+    @Delete(':id')
     async delete (@Param('id',ParseIntPipe) id:number){
         return await this.periodoLectivoService.delete(id);
     }

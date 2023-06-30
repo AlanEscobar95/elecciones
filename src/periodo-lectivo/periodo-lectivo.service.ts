@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { PeriodoLectivoDto } from './dto/periodo-lectivo.dto';
 import { PeriodoLectivoEntity } from './periodo-lectivo.entity';
 import { PeriodoLectivoRepository } from './periodo-lectivo.respository';
+import { MessageDto } from 'src/common/message.dto';
 
 
 @Injectable()
@@ -32,15 +33,18 @@ export class PeriodoLectivoService {
 
     }
     async findByNombre(nombrePeriodoLectivo: string): Promise<PeriodoLectivoEntity> {
-        const periodoLectivo = await this.periodoLectivoRepository.findOne({ where: { nombrePeriodoLectivo: nombrePeriodoLectivo } });
-        return periodoLectivo;
+        const lista = await this.periodoLectivoRepository.findOne({ where: { nombrePeriodoLectivo: nombrePeriodoLectivo } });
+        return lista;
+      }
 
-    }
     async create(dto: PeriodoLectivoDto): Promise<any> {
-        const periodoLectivo = this.periodoLectivoRepository.create(dto);
-        await this.periodoLectivoRepository.save(periodoLectivo);
-        return { message: `Periodo lectivo ${periodoLectivo.nombrePeriodoLectivo} creado` };
-    }
+        const exists = await this.findByNombre(dto.nombrePeriodoLectivo);
+        if (exists) throw new BadRequestException(new MessageDto('Ese periodo lectivo ya existe'))
+        const periodo = this.periodoLectivoRepository.create(dto);
+        await this.periodoLectivoRepository.save(periodo);
+        return new MessageDto(`Periodo ${periodo.nombrePeriodoLectivo} creado`);
+      }
+
     async update (id:number, dto: PeriodoLectivoDto): Promise<any>{
         const periodoLectivo = await this.findById(id);
         if(!periodoLectivo)

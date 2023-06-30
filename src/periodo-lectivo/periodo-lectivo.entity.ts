@@ -11,7 +11,6 @@ id:number;
     type: 'varchar',
     comment: 'Nombre del periodo lectivo Eem: Periodo lectivo 2019/2020'
 })
-
 nombrePeriodoLectivo: string;
 
 @OneToMany(()  => ListasEntity, lista => lista.periodoLectivo)

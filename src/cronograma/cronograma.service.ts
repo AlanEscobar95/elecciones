@@ -16,7 +16,7 @@ export class CronogramaService {
     private cronogramaRepository: CronogramaRepository
   ) {}
   
-  @RolDecorator(RolNombre.ADMINISTRADOR)
+  
   async getall(): Promise<CronogramasEntity[]> {
     const list = await this.cronogramaRepository.find();
     if (!list.length) {
@@ -25,7 +25,7 @@ export class CronogramaService {
     return list;
   }
  
-  @RolDecorator(RolNombre.ADMINISTRADOR)
+  
   async findById(id: number): Promise<CronogramasEntity> {
     const cronograma = await this.cronogramaRepository.findOne({where:{id:id}});
     if (!cronograma) {
@@ -34,13 +34,13 @@ export class CronogramaService {
     return cronograma;
   }
   
-  @RolDecorator(RolNombre.ADMINISTRADOR)
+  
   async findByNombre(nombreCronograma: string): Promise<CronogramasEntity> {
     const cronograma = await this.cronogramaRepository.findOne({ where: { nombreCronograma: nombreCronograma } });
     return cronograma;
   }
   
-  @RolDecorator(RolNombre.ADMINISTRADOR)
+  //@RolDecorator(RolNombre.ADMINISTRADOR)
   async create(dto: CronogramaDto): Promise<any> {
     const exists = await this.findByNombre(dto.nombreCronograma);
     if (exists) throw new BadRequestException(new MessageDto ('Esta tarea ya existe'))
@@ -49,18 +49,18 @@ export class CronogramaService {
     return new MessageDto (`Tarea ${cronograma.nombreCronograma} creada` );
   } 
 
-  @RolDecorator(RolNombre.ADMINISTRADOR)
+
   async update(id: number, dto: CronogramaDto): Promise<any> {
     const cronograma = await this.findById(id);
     if(!cronograma)
     throw new BadRequestException(new MessageDto ('Esa tarea no existe'));
+    dto.nombreCronograma ? cronograma.nombreCronograma = dto.nombreCronograma : cronograma.nombreCronograma = cronograma.nombreCronograma;
     const exists = await this.findByNombre(dto.nombreCronograma);
     if (exists && exists.id !==id) throw new BadRequestException(new MessageDto ('Esa tarea ya existe'));
     await this.cronogramaRepository.save(cronograma);
     return new MessageDto (`Tarea ${cronograma.nombreCronograma} actualizada` );
   }
   
-  @RolDecorator(RolNombre.ADMINISTRADOR)
   async delete(id: number): Promise<any> {
     const cronograma = await this.findById(id);
     await this.cronogramaRepository.remove(cronograma);
