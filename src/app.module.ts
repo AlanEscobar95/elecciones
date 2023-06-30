@@ -9,7 +9,12 @@ import { UsuarioModule } from './usuario/usuario.module';
 import { RolModule } from './rol/rol.module';
 import { AuthModule } from './auth/auth.module';
 import { ListasModule } from './listas/listas.module';
-
+import { CarrerasModule } from './carreras/carreras.module';
+import { TareasModule } from './tareas/tareas.module';
+import { PeriodoLectivoModule } from './periodo-lectivo/periodo-lectivo.module';
+import { TipoListasModule } from './tipo-listas/tipo-listas.module';
+import { CargosModule } from './cargos/cargos.module';
+import { EstadosModule } from './estado/estados.module';
 
 @Module({
   imports: [
@@ -35,7 +40,13 @@ import { ListasModule } from './listas/listas.module';
     UsuarioModule,
     RolModule,
     AuthModule,
-    ListasModule
+    ListasModule,
+    CarrerasModule,
+    TareasModule,
+    PeriodoLectivoModule,
+    TipoListasModule,
+    CargosModule,
+    EstadosModule
   ],
   controllers: [AppController],
   providers: [AppService],

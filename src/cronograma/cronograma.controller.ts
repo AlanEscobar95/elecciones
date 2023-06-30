@@ -2,8 +2,6 @@ import {Body,Controller,Get,Param,ParseIntPipe,Post,Put,Delete, UsePipes, Valida
 import {CronogramaDto} from './dto/cronograma-dto';
 import { JwtAuthGuard } from 'src/guards/jwt.guard';
 import { RolesGuard } from 'src/guards/rol.guard';
-import { RolDecorator } from './decorators/rol.decorador';
-import { RolNombre } from 'src/rol/rol.enum';
 import { CronogramaService } from './cronograma.service';
 
 
@@ -25,14 +23,12 @@ export class CronogramaController {
         
 
         @UseGuards(JwtAuthGuard, RolesGuard)
-        @UsePipes(new ValidationPipe({whitelist: true}))
         @Post()
         async create(@Body() dto: CronogramaDto){
           return await this.cronogramaService.create(dto);
         }
         
         @UseGuards(JwtAuthGuard, RolesGuard)
-        @UsePipes(new ValidationPipe({whitelist: true}))
         @Put(':id')
         async update(@Param('id',ParseIntPipe) id: number, @Body() dto:CronogramaDto){
           return await this.cronogramaService.update(id,dto);

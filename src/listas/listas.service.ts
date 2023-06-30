@@ -4,7 +4,7 @@ import { MessageDto } from 'src/common/message.dto';
 import { RolNombre } from 'src/rol/rol.enum';
 import { ListasEntity } from './listas.entity';
 import { ListasRepository } from './listas.repository';
-import { RolDecorator } from 'src/cronograma/decorators/rol.decorador';
+import { RolDecorator } from 'decorators/rol.decorador';
 import { ListasDto } from './dto/listas.dto';
 
 
@@ -53,15 +53,10 @@ export class ListasService {
     const exists = await this.findByNombre(dto.nombreLista);
     if (exists && exists.id !== id) throw new BadRequestException(new MessageDto('Esa Lista ya existe'));
     dto.nombreLista ? lista.nombreLista = dto.nombreLista : lista.nombreLista = lista.nombreLista;
-    console.log(lista.nombreLista);
     dto.slogan ? lista.slogan = dto.slogan : lista.slogan = lista.slogan;
-    console.log(lista.slogan);
     dto.propuestas ? lista.propuestas = dto.propuestas : lista.propuestas = lista.propuestas;
-    console.log(lista.propuestas);
     dto.color ? lista.color = dto.color : lista.color = lista.color;
-    console.log(lista.color);
     dto.numeroLista ? lista.numeroLista = dto.numeroLista : lista.numeroLista = lista.numeroLista;
-    console.log(lista.numeroLista);
     dto.imagenLogo ? lista.imagenLogo = dto.imagenLogo : lista.imagenLogo = lista.imagenLogo;
     await this.listasRepository.save(lista);
     return new MessageDto(`Lista ${lista.nombreLista} actualizada`);

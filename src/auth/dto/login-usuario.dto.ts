@@ -1,5 +1,5 @@
 import { IsEmail, MaxLength} from "class-validator";
-import { IsNotBlank } from "src/cronograma/decorators/is-not-blank.decorator";
+import { IsNotBlank } from "decorators/is-not-blank.decorator";
 
 export class LoginUsuarioDto{
    

@@ -5,7 +5,8 @@ import { CronogramaDto } from './dto/cronograma-dto';
 import { CronogramaRepository } from './cronograma.repository';
 import { MessageDto } from 'src/common/message.dto';
 import { RolNombre } from 'src/rol/rol.enum';
-import { RolDecorator } from './decorators/rol.decorador';
+import { RolDecorator } from 'decorators/rol.decorador';
+
 
 @Injectable()
 export class CronogramaService {
@@ -34,18 +35,18 @@ export class CronogramaService {
   }
   
   @RolDecorator(RolNombre.ADMINISTRADOR)
-  async findByNombre(nomTarea: string): Promise<CronogramasEntity> {
-    const cronograma = await this.cronogramaRepository.findOne({ where: { nomTarea: nomTarea } });
+  async findByNombre(nombreCronograma: string): Promise<CronogramasEntity> {
+    const cronograma = await this.cronogramaRepository.findOne({ where: { nombreCronograma: nombreCronograma } });
     return cronograma;
   }
   
   @RolDecorator(RolNombre.ADMINISTRADOR)
   async create(dto: CronogramaDto): Promise<any> {
-    const exists = await this.findByNombre(dto.nomTarea);
+    const exists = await this.findByNombre(dto.nombreCronograma);
     if (exists) throw new BadRequestException(new MessageDto ('Esta tarea ya existe'))
     const cronograma = this.cronogramaRepository.create(dto);
     await this.cronogramaRepository.save(cronograma);
-    return new MessageDto (`Tarea ${cronograma.nomTarea} creada` );
+    return new MessageDto (`Tarea ${cronograma.nombreCronograma} creada` );
   } 
 
   @RolDecorator(RolNombre.ADMINISTRADOR)
@@ -53,21 +54,17 @@ export class CronogramaService {
     const cronograma = await this.findById(id);
     if(!cronograma)
     throw new BadRequestException(new MessageDto ('Esa tarea no existe'));
-    const exists = await this.findByNombre(dto.nomTarea);
+    const exists = await this.findByNombre(dto.nombreCronograma);
     if (exists && exists.id !==id) throw new BadRequestException(new MessageDto ('Esa tarea ya existe'));
-    dto.nomTarea ? cronograma.nomTarea = dto.nomTarea : cronograma.nomTarea = cronograma.nomTarea;
-    dto.encargado ? cronograma.encargado = dto.encargado : cronograma.encargado = cronograma.encargado;
-    dto.fechaIni ? cronograma.fechaIni = dto.fechaIni : cronograma.fechaIni = cronograma.fechaIni;
-    dto.fechaFin ? cronograma.fechaFin = dto.fechaFin: cronograma.fechaFin = cronograma.fechaFin;
     await this.cronogramaRepository.save(cronograma);
-    return new MessageDto (`Tarea ${cronograma.nomTarea} actualizada` );
+    return new MessageDto (`Tarea ${cronograma.nombreCronograma} actualizada` );
   }
   
   @RolDecorator(RolNombre.ADMINISTRADOR)
   async delete(id: number): Promise<any> {
     const cronograma = await this.findById(id);
-    await this.cronogramaRepository.delete(cronograma);
-    return new MessageDto (`Tarea ${cronograma.nomTarea} eliminada` );
+    await this.cronogramaRepository.remove(cronograma);
+    return new MessageDto (`Tarea ${cronograma.nombreCronograma} eliminada` );
   }
 }
 
