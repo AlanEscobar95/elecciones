@@ -18,9 +18,10 @@ export class EstadosController {
     }
 
     @Post()
-    async create(@Body() dto:EstadosDto){
-        return await this.estadosService.create(dto)
+    async create(@Body() dto: EstadosDto){
+        return await this.estadosService.create(dto);
     }
+
 
     @Put(':id')
     async update(@Param('id', ParseIntPipe) id:number, @Body() dto:EstadosDto){

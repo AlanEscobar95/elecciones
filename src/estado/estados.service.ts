@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { EstadosEntity } from './estados.entity';
 import { EstadosRepository } from './estados.repository';
 import { EstadosDto } from './dto/estadosDto';
+import { MessageDto } from 'src/common/message.dto';
 
 @Injectable()
 export class EstadosService {
@@ -32,23 +33,22 @@ export class EstadosService {
         return estados;
     }
 
-    async create (dto: EstadosDto):Promise<any>{
+    async create(dto:EstadosDto):Promise<any>{
         const estados = this.estadosRepository.create(dto);
         await this.estadosRepository.save(estados);
-        return {message: `Estado ${estados.nombreEstado} creado`} 
+        return {message:`Estado ${estados.nombreEstado} creado`};
     }
 
-    async update(id: number, dto: EstadosDto): Promise<any>{
+    async update(id: number, dto: EstadosDto): Promise<any> {
         const estados = await this.findById(id);
-        if(!estados){
-            throw new BadRequestException({message: 'Esta lista no existe'})
-        }
-
-        dto.nombreEstado ? estados.nombreEstado = dto.nombreEstado:estados.nombreEstado = estados.nombreEstado;
-
+        if(!estados)
+        throw new BadRequestException(new MessageDto ('Ese estado ya existe'));
+        dto.nombreEstado ? estados.nombreEstado = dto.nombreEstado : estados.nombreEstado = estados.nombreEstado;
+        const exists = await this.findByNombre(dto.nombreEstado);
+        if (exists && exists.id !==id) throw new BadRequestException(new MessageDto ('Esa tarea ya existe'));
         await this.estadosRepository.save(estados);
-        return {message: `Estado ${estados.nombreEstado} actualizado`}
-    }
+        return new MessageDto (`Estado ${estados.nombreEstado} actualizado` );
+      }
 
     async delete(id:number): Promise<any>{
         const estados = await this.findById(id);

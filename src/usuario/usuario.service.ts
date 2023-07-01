@@ -8,6 +8,7 @@ import { RolesEntity } from 'src/rol/rol.entity';
 import { RolRepository } from 'src/rol/rol.repository';
 import { RolNombre } from 'src/rol/rol.enum';
 import { In } from 'typeorm';
+import { async } from 'rxjs';
 
 @Injectable()
 export class UsuarioService {
@@ -24,6 +25,19 @@ export class UsuarioService {
         return usuarios;
        }
     
+        async findById(id:number): Promise<UsuariosEntity>{
+            const usuario = await this.usuarioRepository.findOne({where:{id:id}})
+            if(!usuario){
+            throw new NotFoundException(new MessageDto('No existe ese usuario'));
+            }
+            return usuario;
+        }
+
+        async findByCorreo(correo_electronico:string): Promise<UsuariosEntity>{
+            const usuario = await this.usuarioRepository.findOne({where:{correo_electronico:correo_electronico}})
+            return usuario;
+           }   
+        
        async create(dto: CreateUsuarioDto): Promise<any> {
         const {nombreRol, correo_electronico} = dto;
         const exists = await this.usuarioRepository.findOne({where: [{nombreRol: nombreRol}, {correo_electronico: correo_electronico}]});
@@ -34,5 +48,25 @@ export class UsuarioService {
         admin.roles = [rolAdmin];
         await this.usuarioRepository.save(admin);
         return new MessageDto('Administrador Creado con Exito');
-    }   
+    }  
+    
+    async update(id: number, dto: CreateUsuarioDto): Promise<any> {
+        const usuario = await this.findById(id);
+        if(!usuario)
+        throw new BadRequestException(new MessageDto ('Ese usuario no existe'));
+        dto.nombreRol ? usuario.nombreRol = dto.nombreRol : usuario.nombreRol = usuario.nombreRol;
+        dto.nombre ? usuario.nombre = dto.nombre : usuario.nombre = usuario.nombre;
+        dto.correo_electronico ? usuario.correo_electronico = dto.correo_electronico : usuario.correo_electronico = usuario.correo_electronico;
+        dto.password ? usuario.password = dto.password : usuario.password = usuario.password;
+        dto.estado_usuario ? usuario.estado_usuario = dto.estado_usuario : usuario.estado_usuario = usuario.estado_usuario;
+        dto.estado_voto ? usuario.estado_voto = dto.estado_voto : usuario.estado_voto = usuario.estado_voto;
+        await this.usuarioRepository.save(usuario);
+        return new MessageDto (`Usuario ${usuario.nombre} actualizado` );
+    }
+
+    async delete(id:number): Promise<any>{
+        const usuario = await this.findById(id);
+        await this.usuarioRepository.remove(usuario);
+        return new MessageDto(`Usuario ${usuario.nombre} eliminado`);
+    }
 }
