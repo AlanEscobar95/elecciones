@@ -2,10 +2,9 @@ import { hash } from "bcryptjs";
 import { CargosEntity } from "src/cargos/cargos.entity";
 import { CarrerasEntity } from "src/carreras/carreras.entity";
 import { EstadosEntity } from "src/estado/estados.entity";
-
-import { ListasEntity } from "src/listas/listas.entity";
 import { RolesEntity } from "src/rol/rol.entity";
-import { BeforeInsert, BeforeUpdate, Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { VotosEntity } from "src/votos/votos.entity";
+import { BeforeInsert, BeforeUpdate, Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({name:'usuarios'})
 export class UsuariosEntity{
@@ -48,9 +47,6 @@ export class UsuariosEntity{
     })
     roles:RolesEntity[];
 
-    @ManyToOne(() => ListasEntity, lista => lista.usuarios)
-    @JoinColumn({ name: 'lista_id' })
-    lista: ListasEntity;
     
     @ManyToOne(() => CarrerasEntity, carrera => carrera.usuarios)
     @JoinColumn({ name: 'carrera_id' })
@@ -62,6 +58,10 @@ export class UsuariosEntity{
 
     @ManyToOne(() => CargosEntity, cargo => cargo.usuarios)
     cargos: UsuariosEntity[]
+
+    @OneToMany(() => VotosEntity, voto => voto.usuario)
+    votos: VotosEntity[];
+
 
     @BeforeInsert()
     @BeforeUpdate()

@@ -15,6 +15,9 @@ import { PeriodoLectivoModule } from './periodo-lectivo/periodo-lectivo.module';
 import { TipoListasModule } from './tipo-listas/tipo-listas.module';
 import { CargosModule } from './cargos/cargos.module';
 import { EstadosModule } from './estado/estados.module';
+import { VotosModule } from './votos/votos.module';
+
+
 
 @Module({
   imports: [
@@ -46,10 +49,10 @@ import { EstadosModule } from './estado/estados.module';
     PeriodoLectivoModule,
     TipoListasModule,
     CargosModule,
-    EstadosModule
+    EstadosModule,
+    VotosModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {}
-
