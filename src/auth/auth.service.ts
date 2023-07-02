@@ -40,6 +40,18 @@ export class AuthService {
         return new MessageDto('Usuario creado correctamente');
     }
 
+    async createVotante(dto: NuevoUsuarioDto): Promise<any> {
+        const { nombreRol,correo_electronico } = dto;
+        const exists = await this.authRepository.findOne({ where: [{ nombreRol:nombreRol,correo_electronico: correo_electronico }] });
+        if (exists) throw new BadRequestException(new MessageDto('ese usuario ya existe'));
+        const rolVotante = await this.rolRepository.findOne({ where: { rolNombre: RolNombre.VOTANTE }});
+        if (!rolVotante) throw new InternalServerErrorException(new MessageDto('El usuario aún no ha sido creado'));
+        const votante = this.authRepository.create(dto);
+        votante.roles = [rolVotante];
+        await this.authRepository.save(votante);
+        return new MessageDto('Usuario creado correctamente');
+    }
+
     async login(dto: LoginUsuarioDto): Promise<any> {
         const {correo_electronico} = dto;
         const usuario = await this.authRepository.findOne({where:[{ correo_electronico: correo_electronico}]});

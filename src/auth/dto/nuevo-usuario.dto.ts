@@ -1,6 +1,7 @@
 import { IsBooleanString, IsEmail, IsString, MaxLength } from "class-validator";
 import { IsNotBlank } from "decorators/is-not-blank.decorator";
 
+
 export class NuevoUsuarioDto{
    
    @IsString()
