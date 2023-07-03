@@ -19,6 +19,12 @@ export class AuthController {
     }
 
     @UsePipes(new ValidationPipe({whitelist: true}))
+    @Post('nuevo/votante')
+    createVotante(@Body()dto: NuevoUsuarioDto){
+        return this.authService.createVotante(dto);
+    }
+
+    @UsePipes(new ValidationPipe({whitelist: true}))
     @Post('login')
     login(@Body()dto: LoginUsuarioDto){
         return this.authService.login(dto);

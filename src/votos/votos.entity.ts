@@ -17,11 +17,11 @@ export class VotosEntity {
     fechaVoto: Date;
 
   @ManyToOne(() => ListasEntity, lista => lista.votos)
-  @JoinColumn({ name: 'lista_id' })
+  @JoinColumn({ name: 'lista' })
   lista: ListasEntity;
 
   @ManyToOne(() => UsuariosEntity, usuario => usuario.votos)
-  @JoinColumn({ name: 'usuario_id' })
+  @JoinColumn({ name: 'usuario' })
   usuario: UsuariosEntity;
     
   }

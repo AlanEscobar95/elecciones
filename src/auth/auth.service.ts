@@ -28,7 +28,7 @@ export class AuthService {
         return usuarios;
     }
 
-    async create(dto: NuevoUsuarioDto): Promise<any> {
+        async create(dto: NuevoUsuarioDto): Promise<any> {
         const { nombreRol,correo_electronico } = dto;
         const exists = await this.authRepository.findOne({ where: [{ nombreRol:nombreRol,correo_electronico: correo_electronico }] });
         if (exists) throw new BadRequestException(new MessageDto('ese usuario ya existe'));
