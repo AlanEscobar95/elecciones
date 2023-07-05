@@ -51,6 +51,6 @@ export class TareasEntity {
   fechaFinalizacion: Date;
 
   @ManyToOne(() => CronogramasEntity, cronograma => cronograma.tareas)
-    cronogramaId: CronogramasEntity;
+    cronogramas: CronogramasEntity;
 
 }

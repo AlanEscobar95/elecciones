@@ -10,12 +10,14 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JWT_SECRET } from 'src/config/constants';
 import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from './strategies/jwt.strategy';
+import { UsuarioRepository } from 'src/usuario/usuario.repository';
+
 
 
 
 @Module({
   imports:[
-    TypeOrmModule.forFeature([UsuariosEntity,RolesEntity,AuthRepository]),
+    TypeOrmModule.forFeature([UsuariosEntity,RolesEntity,UsuarioRepository, AuthRepository]),
     PassportModule.register({
 
       defaultStrategy: 'jwt'

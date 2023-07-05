@@ -40,10 +40,10 @@ export class ListasService {
 
   async create(dto: ListasDto): Promise<any> {
     const exists = await this.findByNombre(dto.nombreLista);
-    if (exists) throw new BadRequestException(new MessageDto('Esta tarea ya existe'))
+    if (exists) throw new BadRequestException(new MessageDto('Esta Lista ya existe'))
     const lista = this.listasRepository.create(dto);
     await this.listasRepository.save(lista);
-    return new MessageDto(`Tarea ${lista.nombreLista} creada`);
+    return new MessageDto(`Lista ${lista.nombreLista} creada`);
   }
 
   async update(id: number, dto: ListasDto): Promise<any> {
@@ -67,6 +67,6 @@ export class ListasService {
   async delete(id: number): Promise<any> {
     const listas = await this.findById(id);
     await this.listasRepository.remove(listas);
-    return new MessageDto(`Tarea ${listas.nombreLista} eliminada`);
+    return new MessageDto(`Lista ${listas.nombreLista} eliminada`);
   }
 }

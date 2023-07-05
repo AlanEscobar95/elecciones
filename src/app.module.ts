@@ -16,6 +16,7 @@ import { TipoListasModule } from './tipo-listas/tipo-listas.module';
 import { CargosModule } from './cargos/cargos.module';
 import { EstadosModule } from './estado/estados.module';
 import { VotosModule } from './votos/votos.module';
+import { ResetPasswordModule } from './reset-password/reset-password.module';
 
 
 
@@ -51,6 +52,7 @@ import { VotosModule } from './votos/votos.module';
     CargosModule,
     EstadosModule,
     VotosModule,
+    ResetPasswordModule,
   ],
   controllers: [AppController],
   providers: [AppService],

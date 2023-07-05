@@ -14,7 +14,7 @@ export class CronogramasEntity{
     @JoinColumn({ name: 'estados_id'})
     estados: EstadosEntity[];
     
-    @OneToMany(() => TareasEntity, tarea => tarea.cronogramaId)
+    @OneToMany(() => TareasEntity, tarea => tarea.cronogramas)
     tareas: TareasEntity[];
     
 }

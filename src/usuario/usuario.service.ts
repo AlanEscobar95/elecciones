@@ -39,8 +39,8 @@ export class UsuarioService {
            }   
         
        async create(dto: CreateUsuarioDto): Promise<any> {
-        const {nombreRol, correo_electronico} = dto;
-        const exists = await this.usuarioRepository.findOne({where: [{nombreRol: nombreRol}, {correo_electronico: correo_electronico}]});
+        const {correo_electronico} = dto;
+        const exists = await this.usuarioRepository.findOne({where: [{correo_electronico: correo_electronico}]});
         if(exists) throw new BadRequestException(new MessageDto('ese usuario ya existe'));
         const rolAdmin = await this.rolRepository.findOne({where: {rolNombre: RolNombre.ADMINISTRADOR}});
         if(!rolAdmin) throw new InternalServerErrorException(new MessageDto('los roles aún no han sido creados'));
@@ -56,6 +56,9 @@ export class UsuarioService {
         throw new BadRequestException(new MessageDto ('Ese usuario no existe'));
         dto.nombreRol ? usuario.nombreRol = dto.nombreRol : usuario.nombreRol = usuario.nombreRol;
         dto.nombre ? usuario.nombre = dto.nombre : usuario.nombre = usuario.nombre;
+        dto.apellido ? usuario.apellido = dto.apellido : usuario.apellido = usuario.apellido;
+        dto.carrera ? usuario.carrera = dto.carrera : usuario.carrera = usuario.carrera;
+        dto.jornada ? usuario.jornada = dto.jornada : usuario.jornada = usuario.jornada;
         dto.correo_electronico ? usuario.correo_electronico = dto.correo_electronico : usuario.correo_electronico = usuario.correo_electronico;
         dto.password ? usuario.password = dto.password : usuario.password = usuario.password;
         dto.estado_usuario ? usuario.estado_usuario = dto.estado_usuario : usuario.estado_usuario = usuario.estado_usuario;
@@ -69,4 +72,5 @@ export class UsuarioService {
         await this.usuarioRepository.remove(usuario);
         return new MessageDto(`Usuario ${usuario.nombre} eliminado`);
     }
-}
+
+ }

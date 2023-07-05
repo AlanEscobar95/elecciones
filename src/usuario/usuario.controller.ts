@@ -30,5 +30,5 @@ export class UsuarioController {
     async delete(@Param('id', ParseIntPipe) id:number){
         return await this.usuarioService.delete(id)
     }
-
+   
 }
